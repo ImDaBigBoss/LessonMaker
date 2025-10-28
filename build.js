@@ -1,7 +1,7 @@
 const path = require('path');
 const fs = require('fs');
 const showdown  = require('showdown');
-const html_format = require('html-format');
+const htmlFormat = require('html-format');
 const mathjax = require('mathjax-node');
 
 const TEMPLATE_FOLDER = "template";
@@ -159,7 +159,18 @@ async function parseMathStrings(markdown) {
 
 function buildRawHTML(markdown) {
     // Convert markdown to HTML
-    const converter = new showdown.Converter({ noHeaderId: true, tables: true });
+    require("showdown-youtube");
+    const converter = new showdown.Converter({
+        noHeaderId: true,
+        tables: true,
+        extensions: [
+            require("showdown-highlight")({
+                pre: true,
+                auto_detection: true
+            }),
+            "youtube"
+        ]
+    });
     let rawHTML = converter.makeHtml(markdown);
     return rawHTML;
 }
@@ -297,7 +308,7 @@ function outputLesson(title, html) {
     indexCode = indexCode.split("${content}").join(html);
 
     // Format the HTML code
-    indexCode = html_format(indexCode);
+    indexCode = htmlFormat(indexCode);
 
     // Write the final HTML file
     fs.writeFileSync(indexPath, indexCode, 'utf8');

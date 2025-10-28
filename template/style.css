@@ -103,7 +103,6 @@ table th, table td {
 }
 
 .indent-box.border > .content {
-    /* Add a left border, from top to bottom + small bottom border from left to 200px */
     border-left: 2px solid #555555;
 }
 .indent-box.border::after {
@@ -112,4 +111,21 @@ table th, table td {
     width: 200px;
     border-bottom: 2px solid #555555;
     margin-left: 2em;
+}
+
+p > code {
+    padding: 4px 6px !important;
+    background-color: #f1f1f1 !important;
+    border-radius: 5px !important;
+}
+
+pre code {
+    padding: 1em !important;
+    background-color: #f1f1f1 !important;
+    border-radius: 15px !important;
+}
+
+img {
+    display: block;
+    max-width: 300pt;
 }

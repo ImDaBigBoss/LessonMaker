@@ -20,7 +20,3 @@ An example (in French) can be found in the `example` folder. The [output saved a
 ```bash
 npm run build example "Exemple de leçon"
 ```
-
-## Licensing
-
-The font in the `template` folder is from [Source Forge](https://sourceforge.net/projects/cm-unicode/), I do not own the rights to it.
