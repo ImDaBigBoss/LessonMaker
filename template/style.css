@@ -1,0 +1,115 @@
+@font-face {
+    font-family: 'CMU Serif';
+    src: url('font/CMUSerif-Roman.eot');
+    src: url('font/CMUSerif-Roman.eot?#iefix') format('embedded-opentype'),
+        url('font/CMUSerif-Roman.woff2') format('woff2'),
+        url('font/CMUSerif-Roman.woff') format('woff'),
+        url('font/CMUSerif-Roman.ttf') format('truetype'),
+        url('font/CMUSerif-Roman.svg#CMUSerif-Roman') format('svg');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+:root {
+    font-family: 'CMU Serif', serif;
+}
+
+h1 {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin-bottom: 0.5em;
+    text-align: center;
+}
+
+h2 {
+    font-size: 2em;
+    font-weight: bold;
+    margin-top: 2em;
+    margin-bottom: 1em;
+}
+
+h3 {
+    font-size: 1.6em;
+    font-weight: bold;
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+}
+
+h4 {
+    /* Remove all formatting for h4, just make the text slightly larger */
+    text-decoration: none;
+    font-weight: normal;
+    margin: 0;
+    margin-top: 1em;
+    font-size: 1.3em;
+}
+h4.example {
+    font-weight: normal;
+    font-size: 1.2em;
+}
+
+h5 {
+    text-decoration: none;
+    font-weight: normal;
+    margin: 0;
+    margin-top: 0.5em;
+    font-size: 1.15em;
+}
+
+h4 .title, h5 .title {
+    font-weight: bold;
+    text-decoration: underline;
+}
+h4 .title.unknown {
+    text-decoration: double underline;
+}
+h4.example .title {
+    font-weight: normal;
+}
+
+p {
+    margin: 0 0 0.5em 0;
+    line-height: 1.2em;
+}
+
+/*.table-container {
+    width: 100%;
+    overflow-x: auto;
+}*/
+
+table {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table th, table td {
+    border: 1px solid black;
+    padding: 0.5em 1em;
+}
+
+.math-inline {
+    display: inline;
+}
+
+.math-block {
+    display: block;
+    margin: 0.5em 0 0 1.5em;
+}
+
+.indent-box .content {
+    margin-left: 2em;
+    padding: 5px 0 10px 15px;
+}
+
+.indent-box.border > .content {
+    /* Add a left border, from top to bottom + small bottom border from left to 200px */
+    border-left: 2px solid #555555;
+}
+.indent-box.border::after {
+    content: "";
+    display: block;
+    width: 200px;
+    border-bottom: 2px solid #555555;
+    margin-left: 2em;
+}

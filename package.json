@@ -1,0 +1,13 @@
+{
+  "name": "lesson-maker",
+  "main": "build.js",
+  "scripts": {
+    "build": "node build.js",
+    "clean": "rm -rf ./dist"
+  },
+  "dependencies": {
+    "html-format": "^1.1.7",
+    "mathjax-node": "^2.1.1",
+    "showdown": "^2.1.0"
+  }
+}
