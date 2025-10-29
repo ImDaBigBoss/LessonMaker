@@ -48,6 +48,35 @@ function fillFolder(source, destination) {
     });
 }
 
+function findFirstTags(content, startTag, endTag) {
+    let currentIndex = 0;
+
+    let singleBacktickOpen = false; // `keyword`
+    let tripleBacktickOpen = false; // ```code block```
+
+    let startIndex = -1;
+
+    while (currentIndex < content.length) {
+        if (content.startsWith("```", currentIndex)) {
+            tripleBacktickOpen = !tripleBacktickOpen;
+            currentIndex += 2; // Skip the next two backticks as well
+        } else if (!tripleBacktickOpen && content.startsWith("`", currentIndex)) {
+            singleBacktickOpen = !singleBacktickOpen;
+        } else if (!singleBacktickOpen && !tripleBacktickOpen) {
+            if (startIndex === -1 && content.startsWith(startTag, currentIndex)) {
+                startIndex = currentIndex;
+                currentIndex += startTag.length - 1;
+            } else if (startIndex !== -1 && content.startsWith(endTag, currentIndex)) {
+                return [startIndex, currentIndex];
+            }
+        }
+
+        currentIndex++;
+    }
+
+    return null;
+}
+
 // --- BUILD STEPS ---
 
 function readSource(folder) {
@@ -123,36 +152,46 @@ async function parseMathStrings(markdown) {
     markdown = markdown.split("\\$").join("&dollar;");
 
     // Now, we look for all the math strings delimited by "$$...$$" and format them using MathJax
-    while (markdown.includes("$$")) {
-        let startIndex = markdown.indexOf("$$");
-        let endIndex = markdown.indexOf("$$", startIndex + 2);
-        if (endIndex === -1) {
-            console.error("Unmatched $$ found in markdown.");
+    let currentMarkdown = markdown;
+    markdown = "";
+    while (true) {
+        let tags = findFirstTags(currentMarkdown, "$$", "$$");
+        if (tags === null) {
             break;
         }
 
-        let mathContent = markdown.substring(startIndex + 2, endIndex);
-        mathContent = await renderMathToSVG(mathContent);
-        let mathHTML = `<span class="math-block">${mathContent}</span>`;
+        let startIndex = tags[0];
+        let endIndex = tags[1];
 
-        markdown = markdown.substring(0, startIndex) + generateMathPlaceholder(mathHTML) + markdown.substring(endIndex + 2);
+        let mathContent = currentMarkdown.substring(startIndex + 2, endIndex);
+        mathContent = await renderMathToSVG(mathContent);
+        let mathHTML = `<div class="math-block">${mathContent}</div>`;
+
+        markdown += currentMarkdown.substring(0, startIndex) + generateMathPlaceholder(mathHTML);
+        currentMarkdown = currentMarkdown.substring(endIndex + 2);
     }
+    markdown += currentMarkdown;
 
     // Finally, we look for all the math strings delimited by "$...$" and format them using MathJax
-    while (markdown.includes("$")) {
-        let startIndex = markdown.indexOf("$");
-        let endIndex = markdown.indexOf("$", startIndex + 1);
-        if (endIndex === -1) {
-            console.error("Unmatched $ found in markdown.");
+    currentMarkdown = markdown;
+    markdown = "";
+    while (true) {
+        let tags = findFirstTags(currentMarkdown, "$", "$");
+        if (tags === null) {
             break;
         }
 
-        let mathContent = markdown.substring(startIndex + 1, endIndex);
+        let startIndex = tags[0];
+        let endIndex = tags[1];
+
+        let mathContent = currentMarkdown.substring(startIndex + 1, endIndex);
         mathContent = await renderMathToSVG(mathContent);
         let mathHTML = `<span class="math-inline">${mathContent}</span>`;
 
-        markdown = markdown.substring(0, startIndex) + generateMathPlaceholder(mathHTML) + markdown.substring(endIndex + 1);
+        markdown += currentMarkdown.substring(0, startIndex) + generateMathPlaceholder(mathHTML);
+        currentMarkdown = currentMarkdown.substring(endIndex + 1);
     }
+    markdown += currentMarkdown;
 
     return [markdown, mathCode];
 }

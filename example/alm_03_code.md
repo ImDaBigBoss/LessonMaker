@@ -2,11 +2,19 @@
 
 ## Code inline
 
-Ceci est du code `inline`. Il peut être utilisé dans une phrase.
+Ceci est du code `inline`. Il peut être utilisé dans une phrase. `<h2>Hello</h2><table></table>` est un exemple de code HTML inline.
 
 ## Bloc de code
 
 Sur plusieurs lignes!
+
+### HTML
+
+```html
+<h1>Hello, World!</h1>
+
+<p>This is a paragraph.</p>
+```
 
 ### Python
 
